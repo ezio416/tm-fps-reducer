@@ -3,7 +3,7 @@
 
 # Dynamic FPS Reducer
 
-Reduces your maximum framerate when the game is paused/unfocused. Inspired by the Minecraft mod: https://modrinth.com/mod/dynamic-fps.
+Reduces the maximum framerate when the game is paused/unfocused. Inspired by the Minecraft mod: https://modrinth.com/mod/dynamic-fps.
 
 <!-- ![Signed](https://img.shields.io/badge/Signed-Yes-00AA00) -->
 <!-- ![Signed](https://img.shields.io/badge/Signed-School_Mode-CC1199) -->
