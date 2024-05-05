@@ -6,13 +6,13 @@ const string title = "\\$F33" + Icons::Film + "\\$G FPS Reducer";
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
 
-[Setting category="General" name="Show FPS caps in menu item"]
+[Setting category="General" name="Show FPS caps in menu item" description="Under Openplanet's 'Plugins' menu at the top."]
 bool S_MenuCaps = true;
 
 [Setting category="General" name="Normal FPS" description="When using this plugin, you should only set your normal maximum framerate here. Setting it elsewhere (i.e. in the normal game settings) will be ignored."]
 int S_NormalFPS = 288;
 
-[Setting category="General" name="Reduce when paused"]
+[Setting category="General" name="Reduce when paused" description="Only applies when in a map."]
 bool S_Paused = true;
 
 [Setting category="General" name="Paused FPS" description="Setting below 11 seems to make the setting ignored."]
