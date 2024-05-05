@@ -42,10 +42,8 @@ void Main() {
             continue;
 
         if (wasEnabled != S_Enabled) {
-            if (wasEnabled) {
-                print("restoring");
+            if (wasEnabled)
                 RestoreFps();
-            }
 
             wasEnabled = S_Enabled;
 
@@ -55,12 +53,9 @@ void Main() {
         if (!S_Enabled)
             continue;
 
-        const bool paused    = Paused();
-        const bool unfocused = Unfocused();
-
-        if (S_Unfocused && unfocused)
+        if (S_Unfocused && Unfocused())
             App.SystemConfig.Display.MaxFps = S_UnfocusedFps;
-        else if (S_Paused && paused)
+        else if (S_Paused && Paused())
             App.SystemConfig.Display.MaxFps = S_PausedFps;
         else
             RestoreFps();
