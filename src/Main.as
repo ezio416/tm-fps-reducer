@@ -6,7 +6,7 @@ const string title = "\\$F33" + Icons::Film + "\\$G FPS Reducer";
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
 
-[Setting category="General" name="Normal FPS" description="When using this plugin, you should only set your normal maximum framerate here."]
+[Setting category="General" name="Normal FPS" description="When using this plugin, you should only set your normal maximum framerate here. Setting it elsewhere (i.e. in the normal game settings) will be ignored."]
 int S_NormalFPS = 288;
 
 [Setting category="General" name="Reduce when paused"]
