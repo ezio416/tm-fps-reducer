@@ -1,7 +1,7 @@
 ![Signed](https://img.shields.io/badge/Signed-No-FF3333)
 ![Game Trackmania](https://img.shields.io/badge/Game-Trackmania-blue)
 
-# Dynamic FPS Reducer
+# FPS Reducer
 
 Reduces the maximum framerate when the game is paused/unfocused. Inspired by the Minecraft mod: https://modrinth.com/mod/dynamic-fps.
 

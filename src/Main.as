@@ -1,7 +1,7 @@
 // c 2024-05-05
 // m 2024-05-05
 
-const string title = "\\$F33" + Icons::VideoCamera + "\\$G Dynamic FPS Reducer";
+const string title = "\\$F33" + Icons::Film + "\\$G FPS Reducer";
 
 [Setting category="General" name="Enabled"]
 bool S_Enabled = true;
