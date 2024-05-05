@@ -18,7 +18,7 @@ int S_PausedFps = 30;
 [Setting category="General" name="Reduce when unfocused"]
 bool S_Unfocused = true;
 
-[Setting category="General" name="Unfocused FPS" description="Setting below 11 seems to make the setting ignored. Can't be greater than the 'Paused FPS'."]
+[Setting category="General" name="Unfocused FPS" description="Setting below 11 seems to make the setting ignored. Can't be greater than the 'Paused FPS' above."]
 int S_UnfocusedFps = 11;
 
 void Main() {
