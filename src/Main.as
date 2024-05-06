@@ -30,7 +30,7 @@ void Main() {
     if (App.SystemConfig is null || App.SystemConfig.Display is null) {
         const string msg = "There was a problem getting the current FPS cap. Plugin is now disabled - you may try reloading it to fix this.";
         warn(msg);
-        UI::ShowNotification(title, msg, vec4(), 10000);
+        UI::ShowNotification(title, msg, vec4(1.0f, 0.6f, 0.0f, 0.5f), 10000);
         return;
     }
 
