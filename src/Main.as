@@ -1,46 +1,74 @@
 // c 2024-05-05
-// m 2024-06-04
+// m 2024-08-03
 
 const string title = "\\$F33" + Icons::Film + "\\$G FPS Reducer";
 
-[Setting category="General" name="Enabled"]
-bool S_Enabled = true;
+[Setting hidden] bool S_Enabled      = true;
+[Setting hidden] bool S_MenuLimits   = true;
+[Setting hidden] bool S_GrabAtBoot   = false;
+[Setting hidden] int  S_NormalFPS    = 288;
+[Setting hidden] bool S_MainMenu     = true;
+[Setting hidden] int  S_MainMenuFps  = 60;
+[Setting hidden] bool S_Paused       = true;
+[Setting hidden] int  S_PausedFps    = 30;
+[Setting hidden] bool S_Unfocused    = true;
+[Setting hidden] int  S_UnfocusedFps = 11;
 
-[Setting category="General" name="Show FPS caps in menu item" description="Under Openplanet's 'Plugins' menu at the top."]
-bool S_MenuCaps = true;
+[SettingsTab name="General" icon="Cogs"]
+void Settings_General() {
+    if (UI::Button("Reset to default")) {
+        Meta::PluginSetting@[]@ settings = Meta::ExecutingPlugin().GetSettings();
 
-[Setting category="General" name="Normal FPS" description="When using this plugin, you should only set your normal maximum framerate here. Setting it elsewhere (i.e. in the normal game settings) will be ignored."]
-int S_NormalFPS = 288;
+        for (uint i = 0; i < settings.Length; i++)
+            settings[i].Reset();
+    }
 
-[Setting category="General" name="Reduce when in main menu"]
-bool S_MainMenu = true;
+    S_Enabled = UI::Checkbox("Enabled", S_Enabled);
 
-[Setting category="General" name="Main menu FPS" description="Setting below 11 seems to make the setting ignored."]
-int S_MainMenuFps = 60;
+    S_MenuLimits = UI::Checkbox("Show FPS limits in menu item", S_MenuLimits);
+    HoverTooltipSetting("Under Openplanet's 'Plugins' menu at the top.");
 
-[Setting category="General" name="Reduce when paused" description="Only applies when in a map."]
-bool S_Paused = true;
+    S_GrabAtBoot = UI::Checkbox("Grab FPS limit from game at boot", S_GrabAtBoot);
+    HoverTooltipSetting("If enabled, you may have issues if your game previously crashed.");
 
-[Setting category="General" name="Paused FPS" description="Setting below 11 seems to make the setting ignored."]
-int S_PausedFps = 30;
+    S_NormalFPS = UI::InputInt("Normal FPS", S_NormalFPS);
+    HoverTooltipSetting("When using this plugin, you should only set your normal maximum framerate here. Setting it elsewhere (i.e. in the normal game settings) will be ignored.");
 
-[Setting category="General" name="Reduce when unfocused"]
-bool S_Unfocused = true;
+    UI::Separator();
+    S_MainMenu = UI::Checkbox("Reduce when in main menu", S_MainMenu);
+    if (S_MainMenu) {
+        S_MainMenuFps = UI::InputInt("Main menu FPS", S_MainMenuFps);
+        HoverTooltipSetting("Setting below 11 seems to make the setting ignored.");
+    }
 
-[Setting category="General" name="Unfocused FPS" description="Setting below 11 seems to make the setting ignored. Can't be greater than the 'Main menu FPS' or 'Paused FPS' above."]
-int S_UnfocusedFps = 11;
+    UI::Separator();
+    S_Paused = UI::Checkbox("Reduce when paused", S_Paused);
+    if (S_Paused) {
+        S_PausedFps = UI::InputInt("Paused FPS", S_PausedFps);
+        HoverTooltipSetting("Setting below 11 seems to make the setting ignored. Only applies when in a map.");
+    }
+
+    UI::Separator();
+    S_Unfocused = UI::Checkbox("Reduce when unfocused", S_Unfocused);
+    if (S_Unfocused) {
+        S_UnfocusedFps = UI::InputInt("Unfocused FPS", S_UnfocusedFps);
+        HoverTooltipSetting("Setting below 11 seems to make the setting ignored. Can't be greater than any setting above.");
+    }
+}
 
 void Main() {
     CTrackMania@ App = cast<CTrackMania@>(GetApp());
 
-    if (App.SystemConfig is null || App.SystemConfig.Display is null) {
-        const string msg = "There was a problem getting the current FPS cap. Plugin is now disabled - you may try reloading it to fix this.";
-        warn(msg);
-        UI::ShowNotification(title, msg, vec4(1.0f, 0.6f, 0.0f, 0.5f), 10000);
-        return;
-    }
+    if (S_GrabAtBoot) {
+        if (App.SystemConfig is null || App.SystemConfig.Display is null) {
+            const string msg = "There was a problem getting the current FPS limit. Plugin is now disabled - you may try reloading it to fix this.";
+            warn(msg);
+            UI::ShowNotification(title, msg, vec4(1.0f, 0.6f, 0.0f, 0.5f), 10000);
+            return;
+        }
 
-    S_NormalFPS = App.SystemConfig.Display.MaxFps;
+        S_NormalFPS = App.SystemConfig.Display.MaxFps;
+    }
 
     bool wasEnabled = S_Enabled;
 
@@ -110,8 +138,20 @@ void RenderMenu() {
         + (              paused && !unfocused ? "\\$7D7" : "") + S_PausedFps    + "\\$777 / "
         + (                         unfocused ? "\\$7D7" : "") + S_UnfocusedFps + "\\$777)";
 
-    if (UI::MenuItem(title + (S_MenuCaps ? caps : ""), "", S_Enabled))
+    if (UI::MenuItem(title + (S_MenuLimits ? caps : ""), "", S_Enabled))
         S_Enabled = !S_Enabled;
+}
+
+void HoverTooltipSetting(const string &in msg) {
+    UI::SameLine();
+    UI::Text("\\$666" + Icons::QuestionCircle);
+    if (!UI::IsItemHovered())
+        return;
+
+    UI::SetNextWindowSize(int(Math::Min(Draw::MeasureString(msg).x, 400.0f)), 0.0f);
+    UI::BeginTooltip();
+    UI::TextWrapped(msg);
+    UI::EndTooltip();
 }
 
 const bool MainMenu() {
