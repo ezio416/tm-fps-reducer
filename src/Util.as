@@ -14,11 +14,19 @@ const bool MainMenu() {
 const bool Paused() {
     auto App = cast<CTrackMania>(GetApp());
 
+#if TMNEXT || MP4
     return true
         and App.CurrentPlayground !is null
         and App.Network.PlaygroundClientScriptAPI !is null
         and App.Network.PlaygroundClientScriptAPI.IsInGameMenuDisplayed
     ;
+#elif TURBO
+    try {
+        return App.CurrentPlayground.Interface.ManialinkPage.Childs[27].IsFocused;
+    } catch {
+        return false;
+    }
+#endif
 }
 
 void RestoreFps() {
@@ -36,6 +44,10 @@ const bool Unfocused() {
 
     return true
         and App.InputPort !is null
+#if TMNEXT || MP4
         and !App.InputPort.IsFocused
+#elif TURBO
+        and Dev::GetOffsetUint32(App.InputPort, 0x890) == 0
+#endif
     ;
 }
