@@ -2,7 +2,7 @@
 // m 2025-07-10
 
 const string  pluginColor = "\\$F33";
-const string  pluginIcon  = Icons::University;
+const string  pluginIcon  = Icons::Film;
 Meta::Plugin@ pluginMeta  = Meta::ExecutingPlugin();
 const string  pluginTitle = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
 
@@ -11,8 +11,9 @@ void Main() {
 
     if (S_GrabAtBoot) {
         if (false
-            or App.SystemConfig is null
-            or App.SystemConfig.Display is null
+            or App.Viewport is null
+            or App.Viewport.SystemConfig is null
+            or App.Viewport.SystemConfig.Display is null
         ) {
             const string msg = "There was a problem getting the current FPS limit. Plugin is now disabled - you may try reloading it to fix this.";
             warn(msg);
@@ -20,7 +21,7 @@ void Main() {
             return;
         }
 
-        S_NormalFPS = App.SystemConfig.Display.MaxFps;
+        S_NormalFPS = App.Viewport.SystemConfig.Display.MaxFps;
     }
 
     bool wasEnabled = S_Enabled;
@@ -29,8 +30,9 @@ void Main() {
         yield();
 
         if (false
-            or App.SystemConfig is null
-            or App.SystemConfig.Display is null
+            or App.Viewport is null
+            or App.Viewport.SystemConfig is null
+            or App.Viewport.SystemConfig.Display is null
         ) {
             continue;
         }
@@ -50,11 +52,11 @@ void Main() {
         }
 
         if (S_Unfocused and Unfocused()) {
-            App.SystemConfig.Display.MaxFps = S_UnfocusedFps;
+            App.Viewport.SystemConfig.Display.MaxFps = S_UnfocusedFps;
         } else if (S_Paused and Paused()) {
-            App.SystemConfig.Display.MaxFps = S_PausedFps;
+            App.Viewport.SystemConfig.Display.MaxFps = S_PausedFps;
         } else if (S_MainMenu and MainMenu()) {
-            App.SystemConfig.Display.MaxFps = S_MainMenuFps;
+            App.Viewport.SystemConfig.Display.MaxFps = S_MainMenuFps;
         } else {
             RestoreFps();
         }

@@ -38,13 +38,14 @@ void RestoreFps() {
     auto App = cast<CTrackMania>(GetApp());
 
     if (false
-        or App.SystemConfig is null
-        or App.SystemConfig.Display is null
+        or App.Viewport is null
+        or App.Viewport.SystemConfig is null
+        or App.Viewport.SystemConfig.Display is null
     ) {
         return;
     }
 
-    App.SystemConfig.Display.MaxFps = S_NormalFPS;
+    App.Viewport.SystemConfig.Display.MaxFps = S_NormalFPS;
 }
 
 const bool Unfocused() {
