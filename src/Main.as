@@ -7,21 +7,15 @@ Meta::Plugin@ pluginMeta  = Meta::ExecutingPlugin();
 const string  pluginTitle = pluginColor + pluginIcon + "\\$G " + pluginMeta.Name;
 
 void Main() {
-    auto App = cast<CTrackMania>(GetApp());
-
     if (S_GrabAtBoot) {
-        if (false
-            or App.Viewport is null
-            or App.Viewport.SystemConfig is null
-            or App.Viewport.SystemConfig.Display is null
-        ) {
+        try {
+            S_NormalFPS = GetApp().Viewport.SystemConfig.Display.MaxFps;
+        } catch {
             const string msg = "There was a problem getting the current FPS limit. Plugin is now disabled - you may try reloading it to fix this.";
             warn(msg);
             UI::ShowNotification(pluginTitle, msg, vec4(1.0f, 0.6f, 0.0f, 0.5f), 10000);
             return;
         }
-
-        S_NormalFPS = App.Viewport.SystemConfig.Display.MaxFps;
     }
 
     bool wasEnabled = S_Enabled;
@@ -29,21 +23,11 @@ void Main() {
     while (true) {
         yield();
 
-        if (false
-            or App.Viewport is null
-            or App.Viewport.SystemConfig is null
-            or App.Viewport.SystemConfig.Display is null
-        ) {
-            continue;
-        }
-
         if (wasEnabled != S_Enabled) {
             if (wasEnabled) {
                 RestoreFps();
             }
-
             wasEnabled = S_Enabled;
-
             continue;
         }
 
@@ -52,11 +36,11 @@ void Main() {
         }
 
         if (S_Unfocused and Unfocused()) {
-            App.Viewport.SystemConfig.Display.MaxFps = S_UnfocusedFps;
+            SetFps(S_UnfocusedFps);
         } else if (S_Paused and Paused()) {
-            App.Viewport.SystemConfig.Display.MaxFps = S_PausedFps;
+            SetFps(S_PausedFps);
         } else if (S_MainMenu and MainMenu()) {
-            App.Viewport.SystemConfig.Display.MaxFps = S_MainMenuFps;
+            SetFps(S_MainMenuFps);
         } else {
             RestoreFps();
         }

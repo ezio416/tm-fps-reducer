@@ -35,17 +35,13 @@ const bool Paused() {
 }
 
 void RestoreFps() {
-    auto App = cast<CTrackMania>(GetApp());
+    SetFps(S_NormalFPS);
+}
 
-    if (false
-        or App.Viewport is null
-        or App.Viewport.SystemConfig is null
-        or App.Viewport.SystemConfig.Display is null
-    ) {
-        return;
-    }
-
-    App.Viewport.SystemConfig.Display.MaxFps = S_NormalFPS;
+void SetFps(const uint fps) {
+    try {
+        GetApp().Viewport.SystemConfig.Display.MaxFps = fps;
+    } catch { }
 }
 
 const bool Unfocused() {

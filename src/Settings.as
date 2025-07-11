@@ -15,7 +15,7 @@
 [SettingsTab name="General" icon="Cogs"]
 void Settings_General() {
     if (UI::Button("Reset to default")) {
-        Meta::PluginSetting@[]@ settings = Meta::ExecutingPlugin().GetSettings();
+        Meta::PluginSetting@[]@ settings = pluginMeta.GetSettings();
 
         for (uint i = 0; i < settings.Length; i++) {
             settings[i].Reset();
