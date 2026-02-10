@@ -1,6 +1,3 @@
-// c 2025-07-10
-// m 2025-07-10
-
 const bool MainMenu() {
     auto App = cast<CTrackMania>(GetApp());
 

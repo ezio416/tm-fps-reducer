@@ -1,6 +1,3 @@
-// c 2024-05-05
-// m 2025-07-10
-
 const string  pluginColor = "\\$F33";
 const string  pluginIcon  = Icons::Film;
 Meta::Plugin@ pluginMeta  = Meta::ExecutingPlugin();
